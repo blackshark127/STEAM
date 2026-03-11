@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STEAM Lab — Secundaria</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0f0f0f;
+    --white: #fafaf8;
+    --gray-light: #f2f1ee;
+    --gray-mid: #c8c6c0;
+    --gray-dark: #6b6860;
+    --accent: #e8401c;
+    --accent-soft: #fde8e3;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--black);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px;
+    height: 64px;
+    background: rgba(250,250,248,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--gray-light);
+  }
+  .nav-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+    color: var(--black);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--gray-dark);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--black); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 64px;
+  }
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 64px 80px 80px;
+    border-right: 1px solid var(--gray-light);
+  }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 32px;
+  }
+  .hero-tag::before {
+    content: '';
+    display: block; width: 24px; height: 2px;
+    background: var(--accent);
+  }
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(3rem, 5vw, 4.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--black);
+    margin-bottom: 28px;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero-desc {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: var(--gray-dark);
+    max-width: 420px;
+    line-height: 1.75;
+    margin-bottom: 48px;
+  }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: var(--black);
+    color: var(--white);
+    padding: 14px 28px;
+    font-size: 0.875rem; font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s, gap 0.2s;
+  }
+  .hero-cta:hover { background: var(--accent); gap: 20px; }
+  .hero-cta-arrow { font-size: 1.1rem; }
+
+  .hero-right {
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+    padding: 80px 80px 80px 64px;
+    background: var(--gray-light);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(var(--gray-mid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--gray-mid) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity: 0.35;
+  }
+  .hero-stats {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 2px;
+  }
+  .stat {
+    background: var(--white);
+    padding: 32px 28px;
+  }
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3rem;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--black);
+    margin-bottom: 8px;
+  }
+  .stat-num span { color: var(--accent); }
+  .stat-label {
+    font-size: 0.8rem; font-weight: 500;
+    color: var(--gray-dark);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* SECTIONS */
+  section { padding: 100px 80px; }
+  .section-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 64px;
+    border-top: 1px solid var(--gray-mid);
+    padding-top: 32px;
+  }
+  .section-number {
+    font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--gray-mid);
+  }
+  h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    letter-spacing: -0.03em;
+    color: var(--black);
+    line-height: 1.1;
+    max-width: 480px;
+  }
+  h2 em { font-style: italic; color: var(--accent); }
+  .section-action {
+    font-size: 0.875rem; font-weight: 500;
+    color: var(--accent); text-decoration: none;
+    display: flex; align-items: center; gap: 8px;
+    align-self: flex-end;
+    white-space: nowrap;
+    transition: gap 0.2s;
+  }
+  .section-action:hover { gap: 16px; }
+
+  /* PROJECTS */
+  #proyectos { background: var(--white); }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+  .project-card {
+    background: var(--gray-light);
+    padding: 40px 36px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: background 0.25s;
+  }
+  .project-card:hover { background: var(--black); }
+  .project-card:hover .project-title,
+  .project-card:hover .project-area,
+  .project-card:hover .project-meta { color: var(--white); }
+  .project-card:hover .project-tag { background: var(--accent); color: var(--white); }
+  .project-card:hover .project-icon { color: var(--accent); }
+  .project-icon {
+    font-size: 2rem;
+    margin-bottom: 40px;
+    display: block;
+    transition: color 0.25s;
+  }
+  .project-tag {
+    display: inline-block;
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    background: var(--white);
+    color: var(--black);
+    padding: 4px 10px;
+    margin-bottom: 16px;
+    transition: background 0.25s, color 0.25s;
+  }
+  .project-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.35rem;
+    color: var(--black);
+    margin-bottom: 12px;
+    transition: color 0.25s;
+    line-height: 1.25;
+  }
+  .project-area {
+    font-size: 0.875rem;
+    color: var(--gray-dark);
+    margin-bottom: 28px;
+    font-weight: 300;
+    transition: color 0.25s;
+  }
+  .project-meta {
+    font-size: 0.8rem; font-weight: 500;
+    color: var(--gray-dark);
+    letter-spacing: 0.04em;
+    transition: color 0.25s;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .project-meta::before {
+    content: '';
+    display: block; width: 16px; height: 1px;
+    background: currentColor;
+  }
+
+  /* GALLERY */
+  #galeria { background: var(--gray-light); }
+  .gallery-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 280px 280px;
+    gap: 2px;
+  }
+  .gallery-item {
+    background: var(--gray-mid);
+    position: relative;
+    overflow: hidden;
+  }
+  .gallery-item.featured { grid-row: span 2; }
+  .gallery-placeholder {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 12px;
+    color: var(--gray-dark);
+    font-size: 0.8rem; font-weight: 500;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .gallery-placeholder-icon { font-size: 2rem; opacity: 0.5; }
+  .gallery-item:hover .gallery-overlay { opacity: 1; }
+  .gallery-overlay {
+    position: absolute; inset: 0;
+    background: rgba(15,15,15,0.75);
+    display: flex; align-items: flex-end;
+    padding: 24px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .gallery-caption {
+    font-size: 0.875rem; font-weight: 500;
+    color: var(--white);
+  }
+
+  /* EVENTOS */
+  #eventos { background: var(--white); }
+  .events-list { display: flex; flex-direction: column; gap: 2px; }
+  .event-item {
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    align-items: center;
+    gap: 48px;
+    background: var(--gray-light);
+    padding: 32px 40px;
+    transition: background 0.2s;
+    cursor: pointer;
+  }
+  .event-item:hover { background: var(--black); }
+  .event-item:hover .event-date,
+  .event-item:hover .event-title,
+  .event-item:hover .event-desc,
+  .event-item:hover .event-arrow { color: var(--white); }
+  .event-item:hover .event-badge { background: var(--accent); color: var(--white); }
+  .event-date {
+    font-family: 'DM Serif Display', serif;
+    text-align: center;
+    transition: color 0.2s;
+  }
+  .event-day {
+    display: block;
+    font-size: 2.5rem;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--accent);
+  }
+  .event-item:hover .event-day { color: var(--accent); }
+  .event-month {
+    display: block;
+    font-size: 0.75rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--gray-dark);
+    font-family: 'DM Sans', sans-serif;
+  }
+  .event-info { flex: 1; }
+  .event-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.25rem;
+    color: var(--black);
+    margin-bottom: 6px;
+    transition: color 0.2s;
+  }
+  .event-desc {
+    font-size: 0.875rem; font-weight: 300;
+    color: var(--gray-dark);
+    transition: color 0.2s;
+  }
+  .event-badge {
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    background: var(--white);
+    color: var(--black);
+    padding: 6px 14px;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+  }
+  .event-arrow {
+    font-size: 1.2rem;
+    color: var(--gray-mid);
+    transition: color 0.2s;
+    margin-left: 16px;
+  }
+
+  /* ABOUT */
+  #nosotros {
+    background: var(--black);
+    color: var(--white);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    padding: 100px 80px;
+  }
+  #nosotros .section-header { border-color: #2a2a2a; }
+  #nosotros .section-number { color: #444; }
+  #nosotros h2 { color: var(--white); }
+  #nosotros h2 em { color: var(--accent); }
+  .about-text {
+    font-size: 1.05rem; font-weight: 300;
+    color: #a0a09a;
+    line-height: 1.85;
+  }
+  .about-areas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    align-content: start;
+    margin-top: 40px;
+  }
+  .area-tag {
+    background: #1a1a1a;
+    padding: 20px 24px;
+    font-size: 0.875rem; font-weight: 500;
+    color: #ccc;
+    letter-spacing: 0.03em;
+    border-left: 3px solid transparent;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .area-tag:hover { border-color: var(--accent); color: var(--white); }
+  .area-icon { margin-right: 10px; }
+
+  /* FOOTER */
+  footer {
+    background: var(--black);
+    border-top: 1px solid #1e1e1e;
+    padding: 48px 80px;
+    display: flex; align-items: center; justify-content: space-between;
+    color: #444;
+    font-size: 0.85rem;
+  }
+  .footer-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    color: var(--white);
+  }
+  .footer-logo span { color: var(--accent); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-left > * {
+    animation: fadeUp 0.7s ease both;
+  }
+  .hero-tag { animation-delay: 0.1s; }
+  h1 { animation-delay: 0.2s; }
+  .hero-desc { animation-delay: 0.3s; }
+  .hero-cta { animation-delay: 0.4s; }
+
+  /* GOOGLE SITE GUIDE BADGE */
+  .guide-banner {
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+    padding: 20px 32px;
+    margin: 0 80px 0;
+    display: flex; align-items: center; gap: 16px;
+    font-size: 0.875rem;
+    color: var(--black);
+  }
+  .guide-banner strong { font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">STEAM<span>Lab</span></a>
+  <ul class="nav-links">
+    <li><a href="#proyectos">Proyectos</a></li>
+    <li><a href="#galeria">Galería</a></li>
+    <li><a href="#eventos">Eventos</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <span class="hero-tag">Secundaria · STEAM Lab</span>
+    <h1>Ciencia, tecnología<br>y <em>creatividad</em><br>en acción.</h1>
+    <p class="hero-desc">Un espacio donde los alumnos experimentan, diseñan y construyen soluciones reales a través de proyectos interdisciplinarios.</p>
+    <a href="#proyectos" class="hero-cta">Ver proyectos <span class="hero-cta-arrow">→</span></a>
+  </div>
+  <div class="hero-right">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">24<span>+</span></div>
+        <div class="stat-label">Proyectos este ciclo</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">3<span>°</span></div>
+        <div class="stat-label">Grados participantes</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">120</div>
+        <div class="stat-label">Alumnos activos</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">5</div>
+        <div class="stat-label">Áreas STEAM</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GUIDE BANNER -->
+<div class="guide-banner">
+  💡 <div><strong>Nota para Google Sites:</strong> Este es tu prototipo visual de referencia. Al final de la página encontrarás la guía paso a paso para replicarlo en Google Sites.</div>
+</div>
+
+<!-- PROYECTOS -->
+<section id="proyectos">
+  <div class="section-header">
+    <div>
+      <div class="section-number">01 — Proyectos</div>
+      <h2>Lo que nuestros <em>alumnos</em> han creado</h2>
+    </div>
+    <a href="#" class="section-action">Ver todos →</a>
+  </div>
+  <div class="projects-grid">
+    <div class="project-card">
+      <span class="project-icon">🔬</span>
+      <span class="project-tag">Ciencia</span>
+      <div class="project-title">Purificador de agua con materiales reciclados</div>
+      <div class="project-area">Filtración natural · 1° grado</div>
+      <div class="project-meta">Equipo Aguila · Mar 2025</div>
+    </div>
+    <div class="project-card">
+      <span class="project-icon">💻</span>
+      <span class="project-tag">Tecnología</span>
+      <div class="project-title">App de monitoreo de plantas con Arduino</div>
+      <div class="project-area">IoT & Programación · 3° grado</div>
+      <div class="project-meta">Equipo Nexus · Feb 2025</div>
+    </div>
+    <div class="project-card">
+      <span class="project-icon">🏗️</span>
+      <span class="project-tag">Ingeniería</span>
+      <div class="project-title">Puente de palillos resistente al peso</div>
+      <div class="project-area">Estructuras · 2° grado</div>
+      <div class="project-meta">Equipo Construye · Ene 2025</div>
+    </div>
+    <div class="project-card">
+      <span class="project-icon">🎨</span>
+      <span class="project-tag">Arte</span>
+      <div class="project-title">Mural interactivo con realidad aumentada</div>
+      <div class="project-area">Arte Digital · 2° grado</div>
+      <div class="project-meta">Equipo Visión · Ene 2025</div>
+    </div>
+    <div class="project-card">
+      <span class="project-icon">📐</span>
+      <span class="project-tag">Matemáticas</span>
+      <div class="project-title">Modelado 3D de figuras geométricas</div>
+      <div class="project-area">Geometría aplicada · 1° grado</div>
+      <div class="project-meta">Equipo Prism · Nov 2024</div>
+    </div>
+    <div class="project-card">
+      <span class="project-icon">🌱</span>
+      <span class="project-tag">Ciencia</span>
+      <div class="project-title">Invernadero vertical automatizado</div>
+      <div class="project-area">Agricultura urbana · 3° grado</div>
+      <div class="project-meta">Equipo Verde · Oct 2024</div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERÍA -->
+<section id="galeria">
+  <div class="section-header">
+    <div>
+      <div class="section-number">02 — Galería</div>
+      <h2>Momentos del <em>lab</em></h2>
+    </div>
+    <a href="#" class="section-action">Ver galería completa →</a>
+  </div>
+  <div class="gallery-layout">
+    <div class="gallery-item featured">
+      <div class="gallery-placeholder">
+        <span class="gallery-placeholder-icon">📸</span>
+        <span>Foto destacada</span>
+      </div>
+      <div class="gallery-overlay">
+        <span class="gallery-caption">Expo STEAM 2025 — Presentación de proyectos finales</span>
+      </div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-placeholder">
+        <span class="gallery-placeholder-icon">🎥</span>
+        <span>Video</span>
+      </div>
+      <div class="gallery-overlay">
+        <span class="gallery-caption">Taller de Arduino</span>
+      </div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-placeholder">
+        <span class="gallery-placeholder-icon">📸</span>
+        <span>Foto</span>
+      </div>
+      <div class="gallery-overlay">
+        <span class="gallery-caption">Laboratorio de robótica</span>
+      </div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-placeholder">
+        <span class="gallery-placeholder-icon">📸</span>
+        <span>Foto</span>
+      </div>
+      <div class="gallery-overlay">
+        <span class="gallery-caption">Impresión 3D en acción</span>
+      </div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-placeholder">
+        <span class="gallery-placeholder-icon">🎥</span>
+        <span>Video</span>
+      </div>
+      <div class="gallery-overlay">
+        <span class="gallery-caption">Presentación de ciencias</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTOS -->
+<section id="eventos">
+  <div class="section-header">
+    <div>
+      <div class="section-number">03 — Eventos</div>
+      <h2>Próximas <em>actividades</em></h2>
+    </div>
+    <a href="#" class="section-action">Calendario →</a>
+  </div>
+  <div class="events-list">
+    <div class="event-item">
+      <div class="event-date">
+        <span class="event-day">22</span>
+        <span class="event-month">Mar</span>
+      </div>
+      <div class="event-info">
+        <div class="event-title">Expo STEAM 2025</div>
+        <div class="event-desc">Presentación pública de proyectos finales del ciclo escolar — Auditorio principal</div>
+      </div>
+      <span class="event-badge">Próximo</span>
+      <span class="event-arrow">→</span>
+    </div>
+    <div class="event-item">
+      <div class="event-date">
+        <span class="event-day">08</span>
+        <span class="event-month">Abr</span>
+      </div>
+      <div class="event-info">
+        <div class="event-title">Taller de Impresión 3D</div>
+        <div class="event-desc">Introducción al modelado y uso de impresoras 3D — STEAM Lab</div>
+      </div>
+      <span class="event-badge">Taller</span>
+      <span class="event-arrow">→</span>
+    </div>
+    <div class="event-item">
+      <div class="event-date">
+        <span class="event-day">15</span>
+        <span class="event-month">Abr</span>
+      </div>
+      <div class="event-info">
+        <div class="event-title">Concurso Regional de Robótica</div>
+        <div class="event-desc">Participación de equipos seleccionados en competencia regional — Sede externa</div>
+      </div>
+      <span class="event-badge">Concurso</span>
+      <span class="event-arrow">→</span>
+    </div>
+    <div class="event-item">
+      <div class="event-date">
+        <span class="event-day">03</span>
+        <span class="event-month">May</span>
+      </div>
+      <div class="event-info">
+        <div class="event-title">Semana de la Innovación</div>
+        <div class="event-desc">Una semana de talleres, conferencias y demostraciones abiertas para toda la comunidad</div>
+      </div>
+      <span class="event-badge">Semana</span>
+      <span class="event-arrow">→</span>
+    </div>
+  </div>
+</section>
+
+<!-- NOSOTROS -->
+<section id="nosotros">
+  <div>
+    <div class="section-header">
+      <div>
+        <div class="section-number">04 — Nosotros</div>
+        <h2>Un laboratorio para <em>explorar</em> y crear</h2>
+      </div>
+    </div>
+    <p class="about-text">El STEAM Lab es un espacio diseñado para que los alumnos de secundaria desarrollen habilidades del siglo XXI a través de proyectos prácticos, colaborativos e interdisciplinarios. Aquí la curiosidad es el punto de partida y la creatividad, la herramienta principal.</p>
+  </div>
+  <div>
+    <div style="margin-top: 72px;"></div>
+    <div class="about-areas">
+      <div class="area-tag"><span class="area-icon">🔬</span> Ciencia</div>
+      <div class="area-tag"><span class="area-icon">💻</span> Tecnología</div>
+      <div class="area-tag"><span class="area-icon">⚙️</span> Ingeniería</div>
+      <div class="area-tag"><span class="area-icon">🎨</span> Arte</div>
+      <div class="area-tag"><span class="area-icon">📐</span> Matemáticas</div>
+      <div class="area-tag"><span class="area-icon">🤝</span> Colaboración</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">STEAM<span>Lab</span> — Secundaria</span>
+  <span>Ciclo escolar 2024–2025</span>
+  <span>Creado con Google Sites</span>
+</footer>
+
+</body>
+</html>
