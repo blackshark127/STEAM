@@ -262,26 +262,31 @@
     grid-template-rows: 280px 280px;
     gap: 2px;
   }
+  .gallery-row2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 220px;
+    gap: 2px;
+    margin-top: 2px;
+  }
   .gallery-item {
     background: var(--gray-mid);
     position: relative;
     overflow: hidden;
+    cursor: pointer;
   }
   .gallery-item.featured { grid-row: span 2; }
-  .gallery-placeholder {
+  .gallery-item img {
     width: 100%; height: 100%;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 12px;
-    color: var(--gray-dark);
-    font-size: 0.8rem; font-weight: 500;
-    letter-spacing: 0.06em; text-transform: uppercase;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
   }
-  .gallery-placeholder-icon { font-size: 2rem; opacity: 0.5; }
+  .gallery-item:hover img { transform: scale(1.04); }
   .gallery-item:hover .gallery-overlay { opacity: 1; }
   .gallery-overlay {
     position: absolute; inset: 0;
-    background: rgba(15,15,15,0.75);
+    background: rgba(15,15,15,0.72);
     display: flex; align-items: flex-end;
     padding: 24px;
     opacity: 0;
@@ -291,6 +296,36 @@
     font-size: 0.875rem; font-weight: 500;
     color: var(--white);
   }
+
+  /* LIGHTBOX */
+  .lightbox {
+    position: fixed; inset: 0; z-index: 999;
+    background: rgba(10,10,10,0.95);
+    display: none; align-items: center; justify-content: center;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img {
+    max-width: 90vw; max-height: 90vh;
+    object-fit: contain;
+    border-radius: 2px;
+  }
+  .lightbox-close {
+    position: absolute; top: 24px; right: 32px;
+    color: var(--white); font-size: 2rem; cursor: pointer;
+    background: none; border: none; line-height: 1;
+    opacity: 0.7; transition: opacity 0.2s;
+  }
+  .lightbox-close:hover { opacity: 1; }
+  .lightbox-prev, .lightbox-next {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    color: var(--white); font-size: 2rem; cursor: pointer;
+    background: none; border: none; line-height: 1;
+    opacity: 0.6; transition: opacity 0.2s;
+    padding: 16px;
+  }
+  .lightbox-prev { left: 16px; }
+  .lightbox-next { right: 16px; }
+  .lightbox-prev:hover, .lightbox-next:hover { opacity: 1; }
 
   /* EVENTOS */
   #eventos { background: var(--white); }
@@ -550,56 +585,111 @@
       <div class="section-number">02 — Galería</div>
       <h2>Momentos del <em>lab</em></h2>
     </div>
-    <a href="#" class="section-action">Ver galería completa →</a>
+    <a href="https://drive.google.com/drive/folders/1CMQBi2wzzZ5QzAGSlXdmdwv2p2f96rGK" target="_blank" class="section-action">Ver galería completa →</a>
   </div>
+
+  <!-- Fila 1: foto grande + 4 pequeñas en 2 columnas -->
   <div class="gallery-layout">
-    <div class="gallery-item featured">
-      <div class="gallery-placeholder">
-        <span class="gallery-placeholder-icon">📸</span>
-        <span>Foto destacada</span>
-      </div>
-      <div class="gallery-overlay">
-        <span class="gallery-caption">Expo STEAM 2025 — Presentación de proyectos finales</span>
-      </div>
+    <div class="gallery-item featured" onclick="openLightbox(0)">
+      <img src="https://drive.google.com/thumbnail?id=1zMnnQ8kS8NYXRHAUsB05Q74RSJ0bEnLc&sz=w800" alt="Aula STEAM" loading="lazy">
+      <div class="gallery-overlay"><span class="gallery-caption">Ciclo Escolar 2024 — Aula STEAM</span></div>
     </div>
-    <div class="gallery-item">
-      <div class="gallery-placeholder">
-        <span class="gallery-placeholder-icon">🎥</span>
-        <span>Video</span>
-      </div>
-      <div class="gallery-overlay">
-        <span class="gallery-caption">Taller de Arduino</span>
-      </div>
+    <div class="gallery-item" onclick="openLightbox(1)">
+      <img src="https://drive.google.com/thumbnail?id=1BbgWNzqb-0untNRrZEmw8nFaAhN1i5Tq&sz=w600" alt="Proyecto STEAM" loading="lazy">
+      <div class="gallery-overlay"><span class="gallery-caption">Proyectos en acción</span></div>
     </div>
-    <div class="gallery-item">
-      <div class="gallery-placeholder">
-        <span class="gallery-placeholder-icon">📸</span>
-        <span>Foto</span>
-      </div>
-      <div class="gallery-overlay">
-        <span class="gallery-caption">Laboratorio de robótica</span>
-      </div>
+    <div class="gallery-item" onclick="openLightbox(2)">
+      <img src="https://drive.google.com/thumbnail?id=1swRoWls9WAK-QV1l0o7X3A6irnbLoTDp&sz=w600" alt="Proyecto STEAM" loading="lazy">
+      <div class="gallery-overlay"><span class="gallery-caption">Trabajo colaborativo</span></div>
     </div>
-    <div class="gallery-item">
-      <div class="gallery-placeholder">
-        <span class="gallery-placeholder-icon">📸</span>
-        <span>Foto</span>
-      </div>
-      <div class="gallery-overlay">
-        <span class="gallery-caption">Impresión 3D en acción</span>
-      </div>
+    <div class="gallery-item" onclick="openLightbox(3)">
+      <img src="https://drive.google.com/thumbnail?id=131-YlM4IFj9QXxOVM7HLLwEgGAcM13YJ&sz=w600" alt="Proyecto STEAM" loading="lazy">
+      <div class="gallery-overlay"><span class="gallery-caption">Innovación estudiantil</span></div>
     </div>
-    <div class="gallery-item">
-      <div class="gallery-placeholder">
-        <span class="gallery-placeholder-icon">🎥</span>
-        <span>Video</span>
-      </div>
-      <div class="gallery-overlay">
-        <span class="gallery-caption">Presentación de ciencias</span>
-      </div>
+    <div class="gallery-item" onclick="openLightbox(4)">
+      <img src="https://drive.google.com/thumbnail?id=1kmmpM95nWNTEWqrKhoS_FvKbxC72RxiK&sz=w600" alt="Proyecto STEAM" loading="lazy">
+      <div class="gallery-overlay"><span class="gallery-caption">Diseño y fabricación</span></div>
+    </div>
+  </div>
+
+  <!-- Fila 2: 4 fotos iguales -->
+  <div class="gallery-row2">
+    <div class="gallery-item" onclick="openLightbox(5)">
+      <img src="https://drive.google.com/thumbnail?id=1ws-fTK-a_j5Pv3oQ9vGfl_aIG4VLDEdt&sz=w600" alt="Proyecto STEAM" loading="lazy">
+      <div class="gallery-overlay"><span class="gallery-caption">Electrónica y programación</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(6)">
+      <img src="https://drive.google.com/thumbnail?id=10nCjbrlHnUc1GMlTd3WYGk8gltEjQDC0&sz=w600" alt="Proyecto STEAM" loading="lazy">
+      <div class="gallery-overlay"><span class="gallery-caption">Experimentos científicos</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(7)">
+      <img src="https://drive.google.com/thumbnail?id=10WCev-FNjs8h_BUhNZGIwE_gZEPBfhqz&sz=w600" alt="Proyecto STEAM" loading="lazy">
+      <div class="gallery-overlay"><span class="gallery-caption">Arte y tecnología</span></div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(8)">
+      <img src="https://drive.google.com/thumbnail?id=16f_b0xoH-RPY590sxf50GGqHp6GsBbJ2&sz=w600" alt="Proyecto STEAM" loading="lazy">
+      <div class="gallery-overlay"><span class="gallery-caption">Presentación de proyectos</span></div>
     </div>
   </div>
 </section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightboxOnBg(event)">
+  <button class="lightbox-close" onclick="closeLightbox()">×</button>
+  <button class="lightbox-prev" onclick="changeLightbox(-1)">‹</button>
+  <img id="lightbox-img" src="" alt="">
+  <button class="lightbox-next" onclick="changeLightbox(1)">›</button>
+</div>
+
+<script>
+  const galleryImages = [
+    "https://drive.google.com/thumbnail?id=1zMnnQ8kS8NYXRHAUsB05Q74RSJ0bEnLc&sz=w1200",
+    "https://drive.google.com/thumbnail?id=1BbgWNzqb-0untNRrZEmw8nFaAhN1i5Tq&sz=w1200",
+    "https://drive.google.com/thumbnail?id=1swRoWls9WAK-QV1l0o7X3A6irnbLoTDp&sz=w1200",
+    "https://drive.google.com/thumbnail?id=131-YlM4IFj9QXxOVM7HLLwEgGAcM13YJ&sz=w1200",
+    "https://drive.google.com/thumbnail?id=1kmmpM95nWNTEWqrKhoS_FvKbxC72RxiK&sz=w1200",
+    "https://drive.google.com/thumbnail?id=1ws-fTK-a_j5Pv3oQ9vGfl_aIG4VLDEdt&sz=w1200",
+    "https://drive.google.com/thumbnail?id=10nCjbrlHnUc1GMlTd3WYGk8gltEjQDC0&sz=w1200",
+    "https://drive.google.com/thumbnail?id=10WCev-FNjs8h_BUhNZGIwE_gZEPBfhqz&sz=w1200",
+    "https://drive.google.com/thumbnail?id=16f_b0xoH-RPY590sxf50GGqHp6GsBbJ2&sz=w1200",
+    "https://drive.google.com/thumbnail?id=1nbei-Jn5JmOCI4FHCf-K2VoUcyKCUH_5&sz=w1200",
+    "https://drive.google.com/thumbnail?id=1kUKa87wW1GTQ0eNrvAxPcHQyO1ZPVLeN&sz=w1200",
+    "https://drive.google.com/thumbnail?id=1EZbBvJQbqeWGFEksKC-j4H7X82VeMIFE&sz=w1200",
+    "https://drive.google.com/thumbnail?id=1KsOAl_ntTNNusN3tO0sNqsAmLQqIH3gl&sz=w1200",
+    "https://drive.google.com/thumbnail?id=1ku6Z0Na8CmP-vAuP5dD04MZWleF9H4_3&sz=w1200",
+    "https://drive.google.com/thumbnail?id=1VC09j9Ic5Tqg4bwmbMEV23UIyI11P9KN&sz=w1200",
+    "https://drive.google.com/thumbnail?id=1IIsCPP6TDU9PE4UpLTZsBzvVLocEeAGH&sz=w1200",
+    "https://drive.google.com/thumbnail?id=1IeX9TH1IsnUB1oDBCdtPtFJCKphdprJJ&sz=w1200",
+    "https://drive.google.com/thumbnail?id=1t0pFidOjaax1YL5TRGTHd7TWuB8cXVUs&sz=w1200",
+    "https://drive.google.com/thumbnail?id=1TU-ubjH6Lzlr2uIpQAwB-2-Iz3MuvbRH&sz=w1200",
+    "https://drive.google.com/thumbnail?id=1SCi-k2G1N603TIG9yvKiT21Kc-Hc-pYf&sz=w1200"
+  ];
+  let currentIndex = 0;
+
+  function openLightbox(index) {
+    currentIndex = index;
+    document.getElementById('lightbox-img').src = galleryImages[index];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function closeLightboxOnBg(e) {
+    if (e.target === document.getElementById('lightbox')) closeLightbox();
+  }
+  function changeLightbox(dir) {
+    currentIndex = (currentIndex + dir + galleryImages.length) % galleryImages.length;
+    document.getElementById('lightbox-img').src = galleryImages[currentIndex];
+  }
+  document.addEventListener('keydown', function(e) {
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') changeLightbox(-1);
+    if (e.key === 'ArrowRight') changeLightbox(1);
+  });
+</script>
 
 <!-- EVENTOS -->
 <section id="eventos">
